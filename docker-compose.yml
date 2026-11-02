@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+    ports:
+      - "3306:3306"
+    # The general log records every command the server receives, so the demo
+    # can show Prepare/Execute/Close vs a single Query per call.
+    command: ["--general-log=1", "--log-output=TABLE"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
